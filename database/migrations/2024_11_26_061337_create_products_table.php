@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('state');
+            $table->enum('type', ['Tire', 'Rim']);
+            $table->enum('state', ['Brand New', 'Secondhand']);
             $table->string('brand');
-            $table->string('material');
+            $table->string('material')->default('N/A');
             $table->string('size');
-            $table->decimal('price', 10, 2);
+            $table->string('image_path');
             $table->unsignedSmallInteger('stocks')->default(0);
             $table->timestamps();
         });

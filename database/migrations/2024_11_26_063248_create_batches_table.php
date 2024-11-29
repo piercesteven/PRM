@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
             $table->string('batch_number');
+            $table->decimal('grand_total');
             $table->timestamps();
         });
     }

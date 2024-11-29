@@ -20,7 +20,7 @@
 
     --bs-logo-dark: #b12424;
     --bs-logo-subtle: #e03636;
-    --bs-logo-light: #f4c8c7;
+    --bs-logo-light: #ffe6e6;
     --bs-text-gray: #7a7a7a;
     --body-color: #ffecec;
 }
@@ -421,4 +421,55 @@ main {
     .content.overlay-active {
         filter: blur(5px);
     }
+}
+
+/* Custom CSS for uniformity */
+.table-image-col {
+    width: 100px;
+}
+.table-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #6c6a70;
+    overflow: hidden; /* Ensures the image doesn't overflow the div */
+    display: flex; /* Centers the image if needed */
+    align-items: center;
+    justify-content: center;
+    outline: 2px solid rgb(67, 43, 43);
+}
+
+.table-image img {
+    width: 100%; /* Makes the image take up the full width */
+    height: 100%; /* Makes the image take up the full height */
+    object-fit: cover; /* Ensures the image scales properly and fills the div */
+}
+
+/* Pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 8px 16px;
+    margin: 0 2px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #d9e3ee !important;
+    color: white !important;
+    border: 1px solid black;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: var(--bs-text-gray) !important;
+    color: var(--bs-logo-light) !important;
+}
+
+/* Active pagination button */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #47a3f3 !important;
+    color: white !important;
+}
+
+/* Search and show entries spacing */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 20px;
+    font-weight: bold !important;
 }

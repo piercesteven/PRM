@@ -3,32 +3,23 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Ramsey\Uuid\Type\Decimal;
 
 return new class extends Migration
 {
     /**
-     * 
      * Run the migrations.
-     * 
-     * 
      */
     public function up(): void
     {
-        Schema::create('batch_products', function (Blueprint $table) {
+        Schema::create('product_prices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')
                 ->constrained('products')
                 ->onUpdate('cascade')
-                ->onDelete('restrict');
-            $table->foreignId('batch_id')
-                ->constrained('batches')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-            $table->string('dot');
-            $table->unsignedSmallInteger('original_quantity');
-            $table->unsignedSmallInteger('quantity_left');
+                ->onDelete('cascade');
             $table->decimal('price', 10, 2);
-            $table->decimal('sub_total', 10, 2);
+            $table->datetime('effective_date');
             $table->timestamps();
         });
     }
@@ -38,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('batch_products');
+        Schema::dropIfExists('product_prices');
     }
 };

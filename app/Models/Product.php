@@ -12,6 +12,6 @@ class Product extends Model
         'brand',
         'material',
         'size',
-        'price',
+        'image_path',
     ];
 }
