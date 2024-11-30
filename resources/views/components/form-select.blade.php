@@ -3,7 +3,7 @@
 'name',
 'id',
 'items' => [],
-'selected' => null, // Default to null if not provided
+'selected' => null,
 ])
 
 <div class="form-group mb-3">

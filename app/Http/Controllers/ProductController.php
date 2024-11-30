@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
 use App\Models\Product;
+use App\Models\ProductPrice;
+use Exception;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -12,8 +14,13 @@ class ProductController extends Controller
     public function view($id)
     {
         $product = Product::findOrFail($id);
-        return view('pages.view-product', compact('product'));
+        $current_price = ProductPrice::where('product_id', $product->id)
+            ->whereNull('effective_date')
+            ->first();
+        $prices = ProductPrice::where('product_id', $product->id)->where('effective_date', '!=', NULL)->orderBy('id', 'DESC')->get();
+        return view('pages.view-product', compact('product', 'current_price', 'prices'));
     }
+
 
     public function store(ProductStoreRequest $request)
     {
@@ -52,6 +59,26 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
+    public function archive(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|numeric|exists:products,id',
+        ]);
+
+        try {
+            $product = Product::findOrFail($request->id);
+            $new_status = $product->status ? 0 : 1;
+            $message = $product->status ? "archive" : "restore";
+            $product->update(['status' => $new_status]);
+            $product->save();
+            Alert::success("success", 'You successfully ' . $message . ' the product');
+        } catch (Exception $e) {
+            Alert::error('error', 'You failed to ' . ($message ?? 'process') . ' the product.');
+        }
+
+        return redirect()->back();
+    }
+
     private function uploadImage($file, $size, $brand)
     {
         $fileExtension = $file->getClientOriginalExtension();
@@ -59,9 +86,39 @@ class ProductController extends Controller
         return $file->storeAs('images/', $fileName, 'public');
     }
 
-    public function getProductPrices() {}
+    public function changePrice(Request $request)
+    {
+        $data = $request->validate([
+            'product_id' => 'required|numeric|exists:products,id',
+            'price' => 'required|numeric',
+        ]);
 
-    public function getCurrentProductPrice() {}
+        try {
+            $product = Product::findOrFail($data['product_id']);
 
-    public function createNewPrice(Request $request) {}
+            if (empty($product->productPrices)) {
+                ProductPrice::create($data);
+            } else {
+                // Create a new price record
+                ProductPrice::create($data);
+
+                // Get the most recent price (excluding the one just created)
+                $previousPrice = ProductPrice::where('product_id', $product->id)
+                    ->orderBy('id', 'DESC')
+                    ->skip(1) // Skip the newly created price
+                    ->first();
+
+                if ($previousPrice) {
+                    $previousPrice->effective_date = now(); // Update effective date
+                    $previousPrice->save(); // Save the changes
+                }
+            }
+
+            Alert::success("Success", 'You successfully updated the price');
+        } catch (Exception $e) {
+            Alert::error('Error', $e->getMessage());
+        }
+
+        return redirect()->back();
+    }
 }

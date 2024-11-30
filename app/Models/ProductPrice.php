@@ -9,6 +9,10 @@ class ProductPrice extends Model
     protected $fillable = [
         'product_id',
         'price',
-        'effective_date',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

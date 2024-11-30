@@ -11,4 +11,19 @@ class Order extends Model
         'order_status',
         'transact_by',
     ];
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class, 'order_id');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class, 'order_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'transact_by');
+    }
 }

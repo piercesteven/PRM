@@ -19,7 +19,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->decimal('price', 10, 2);
-            $table->datetime('effective_date');
+            $table->datetime('effective_date')->nullable();
             $table->timestamps();
         });
     }

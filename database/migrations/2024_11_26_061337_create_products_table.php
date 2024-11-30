@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('size');
             $table->string('image_path');
             $table->unsignedSmallInteger('stocks')->default(0);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

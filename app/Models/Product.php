@@ -13,5 +13,21 @@ class Product extends Model
         'material',
         'size',
         'image_path',
+        'status'
     ];
+
+    public function productPrices()
+    {
+        return $this->hasMany(ProductPrice::class, 'product_id');
+    }
+
+    public function batchProducts()
+    {
+        return $this->hasMany(BatchProduct::class, 'product_id');
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class, 'product_id');
+    }
 }
