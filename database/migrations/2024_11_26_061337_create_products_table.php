@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['Tire', 'Rim']);
-            $table->enum('state', ['Brand New', 'Secondhand']);
             $table->string('brand');
             $table->string('material')->default('N/A');
             $table->string('size');

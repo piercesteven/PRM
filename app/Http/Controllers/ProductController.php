@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
+use App\Models\BatchProduct;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use Exception;
@@ -14,13 +15,14 @@ class ProductController extends Controller
     public function view($id)
     {
         $product = Product::findOrFail($id);
+        $brandnew_quantity = BatchProduct::where('product_id', $id)->where('state', 'Brand New')->sum('quantity_left');
+        $secondhand_quantity = BatchProduct::where('product_id', $id)->where('state', 'Secondhand')->sum('quantity_left');
         $current_price = ProductPrice::where('product_id', $product->id)
             ->whereNull('effective_date')
             ->first();
         $prices = ProductPrice::where('product_id', $product->id)->where('effective_date', '!=', NULL)->orderBy('id', 'DESC')->get();
-        return view('pages.view-product', compact('product', 'current_price', 'prices'));
+        return view('pages.view-product', compact('product', 'current_price', 'prices', 'brandnew_quantity', 'secondhand_quantity'));
     }
-
 
     public function store(ProductStoreRequest $request)
     {
@@ -40,32 +42,34 @@ class ProductController extends Controller
 
     public function update(Request $request)
     {
-        $data = $request->validate([
-            'id' => 'required|integer|exists:products,id',
-            'type' => 'required|min:3|max:50',
-            'state' => 'required|min:3|max:20',
-            'brand' => 'required|min:3|max:50',
-            'material' => 'required|min:3|max:50',
-            'size' => 'required|min:3|max:20',
-        ]);
-        $product = Product::findOrFail($data['id']);
-        if ($data) {
-            $product->update($data);
-            $product->save();
-            Alert::success('Success', 'You successfully updated the product.');
-        } else {
-            Alert::error('Error', 'Failed to update product.');
+        try {
+            $data = $request->validate([
+                'id' => 'required|integer|exists:products,id',
+                'type' => 'required|min:3|max:50',
+                'brand' => 'required|min:3|max:50',
+                'material' => 'required|min:3|max:50',
+                'size' => 'required|min:3|max:20',
+            ]);
+            $product = Product::findOrFail($data['id']);
+            if ($data) {
+                $product->update($data);
+                $product->save();
+                Alert::success('Success', 'You successfully updated the product.');
+            } else {
+                Alert::error('Error', 'Failed to update product.');
+            }
+        } catch (Exception $e) {
+            Alert::error('Error', $e->getMessage());
         }
         return redirect()->back();
     }
 
     public function archive(Request $request)
     {
-        $request->validate([
-            'id' => 'required|numeric|exists:products,id',
-        ]);
-
         try {
+            $request->validate([
+                'id' => 'required|numeric|exists:products,id',
+            ]);
             $product = Product::findOrFail($request->id);
             $new_status = $product->status ? 0 : 1;
             $message = $product->status ? "archive" : "restore";
@@ -75,7 +79,6 @@ class ProductController extends Controller
         } catch (Exception $e) {
             Alert::error('error', 'You failed to ' . ($message ?? 'process') . ' the product.');
         }
-
         return redirect()->back();
     }
 

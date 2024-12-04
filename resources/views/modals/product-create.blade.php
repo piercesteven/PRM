@@ -7,10 +7,6 @@
                 <x-form-select label="Product Type" name="type" id="productType" :items="['Tire', 'Rim']" />
             </div>
             <div class="col-6">
-                <x-form-select label="Product State" name="state" id="productState"
-                    :items="['Brand New', 'Secondhand']" />
-            </div>
-            <div class="col-6">
                 <x-form-input label="Brand" type="text" name="brand" id="productBrand" />
             </div>
             <div class="col-6">

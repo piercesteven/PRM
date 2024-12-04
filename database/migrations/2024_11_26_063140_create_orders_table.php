@@ -14,14 +14,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->decimal('grand_total', 10, 2);
-            $table->string('order_status');
+            $table->decimal('grand_total', 10, 2)->default(0    );
+            $table->string('order_status')->default(0);
             $table->foreignId('transact_by')
                 ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
             $table->timestamps();
-            
         });
     }
 

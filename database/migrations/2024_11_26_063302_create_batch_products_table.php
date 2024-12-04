@@ -23,12 +23,14 @@ return new class extends Migration
             $table->foreignId('batch_id')
                 ->constrained('batches')
                 ->onUpdate('cascade')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
+            $table->enum('state', ['Brand New', 'Secondhand']);
             $table->string('dot');
             $table->unsignedSmallInteger('original_quantity');
             $table->unsignedSmallInteger('quantity_left');
             $table->decimal('price', 10, 2);
             $table->decimal('sub_total', 10, 2);
+            $table->decimal('sell_price', 10, 2)->nullable();
             $table->timestamps();
         });
     }

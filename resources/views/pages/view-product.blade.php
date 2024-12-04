@@ -42,10 +42,6 @@
                             :selected="$product->type" />
                     </div>
                     <div class="col-6">
-                        <x-form-select label="Product State" name="state" id="productState"
-                            :items="['Brand New', 'Secondhand']" :selected="$product->state" />
-                    </div>
-                    <div class="col-6">
                         <x-form-input label="Brand" type="text" name="brand" id="productBrand"
                             :value="$product->brand" />
                     </div>
@@ -55,10 +51,6 @@
                     </div>
                     <div class="col-6">
                         <x-form-input label="Size" type="text" name="size" id="productSize" :value="$product->size" />
-                    </div>
-                    <div class="col-6">
-                        <label for="stocks" class="fw-bold">Stocks</label>
-                        <input type="text" class="form-control" id="stocks" value="{{ $product->stocks }}" disabled>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-sm btn-dark bg-logo-dark fw-bold float-end"><i
@@ -71,7 +63,9 @@
         <div class="col-6">
             <br>
             <div class="d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold">Current Price: P {{ number_format($current_price->price, 0, '.', ',') }}</h6>
+                <h6 class="fw-bold">Current Price: {{ $current_price ? "P " . number_format($current_price->price) : "No
+                    price
+                    yet" }}</h6>
                 <button class="btn btn-sm btn-dark bg-logo-dark fw-bold" data-bs-toggle="modal"
                     data-bs-target="#productPriceChange">
                     <i class="bi bi-tags-fill me-2"></i>Update price
@@ -82,7 +76,7 @@
                 <div class="card-header text-logo-dark fw-bold">
                     Product prices
                 </div>
-                <div class="card-body" style="max-height: 130px; overflow-y: auto;">
+                <div class="card-body p-0" style="max-height: 130px; overflow-y: auto;">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -110,50 +104,98 @@
                 </div>
             </div>
             <hr>
-            <div class="card table-responsive">
+            <div class="col-12 card">
                 <div class="card-header text-logo-dark fw-bold">
-                    Product stock ins
+                    Tire stocks (Total stocks: {{ $product->stocks . " pcs" }})
                 </div>
-                <div class="card-body" style="max-height: 130px; overflow-y: auto;">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Batch #</th>
-                                <th>DOT</th>
-                                <th>Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>351251</td>
-                                <td>4802</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>351251</td>
-                                <td>4802</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>351251</td>
-                                <td>4802</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>351251</td>
-                                <td>4802</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>351251</td>
-                                <td>4802</td>
-                                <td>4</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="card-body p-0">
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    <small class="fw-bold">
+                                        Brand new stocks record ({{ $brandnew_quantity . " pcs" }})
+                                    </small>
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body p-0" style="max-height: 130px; overflow-y: auto;">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Batch #</th>
+                                                <th>DOT</th>
+                                                <th>Bought Price</th>
+                                                <th>Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($product->batchProducts as $item)
+                                            @if($item->state == "Brand New")
+                                            <tr>
+                                                <td>{{ $item->batch->batch_number }}</td>
+                                                <td>{{ $item->dot }}</td>
+                                                <td>{{ "P " . number_format($item->price) }}</td>
+                                                <td>{{ $item->quantity_left }} pcs</td>
+                                            </tr>
+                                            @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                    aria-controls="flush-collapseTwo">
+                                    <small class="fw-bold">
+                                        Secondhand stocks record ({{ $secondhand_quantity . " pcs" }})
+                                    </small>
+                                </button>
+                            </h2>
+                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body p-0" style="max-height: 130px; overflow-y: auto;">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>DOT</th>
+                                                <th>Qty</th>
+                                                <th>Bought Price</th>
+                                                <th>Sell Price</th>
+                                                <th><i class="bi bi-tags-fill"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($product->batchProducts as $item)
+                                            @if($item->state == "Secondhand")
+                                            <tr>
+                                                <td>{{ $item->dot }}</td>
+                                                <td>{{ $item->quantity_left }} pcs</td>
+                                                <td>{{ "P " . number_format($item->price) }}</td>
+                                                <td>{{ "P " . number_format($item->sell_price) }}</td>
+                                                <td>
+                                                    <button class="btn btn-dark btn-sm fw-bold" data-bs-toggle="modal"
+                                                        data-bs-target="#productSecondhandriceChange{{ $item->id }}"><i
+                                                            class="bi bi-pencil-fill"></i></button>
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @include('modals.product-secondhand-price-change')
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <hr>
             <a href="{{ route('inventory') }}" class="btn btn-sm btn-dark fw-bold float-end mt-3"><i
                     class="bi bi-backspace-fill me-2"></i>Go back
             </a>

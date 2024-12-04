@@ -4,7 +4,8 @@
         @method('POST')
         <input type="hidden" name="id" value="{{ $product->id }}">
         <span class="fs-6">
-            Are you sure you want to <strong class="text-danger">remove</strong> this product?
+            Are you sure you want to <strong>{{ $product->status ? "remove" : "restore" }}</strong>
+            this product?
         </span>
         <hr>
         <div class="d-flex justify-content-end gap-2">

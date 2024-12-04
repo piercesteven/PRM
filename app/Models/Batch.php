@@ -8,6 +8,7 @@ class Batch extends Model
 {
     protected $fillable = [
         'batch_number',
+        'is_closed',
     ];
 
     public function batchProducts()

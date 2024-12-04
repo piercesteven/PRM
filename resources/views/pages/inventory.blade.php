@@ -19,11 +19,10 @@
                         <th>ID</th>
                         <th class="table-image-col">IMAGE</th>
                         <th>TYPE</th>
-                        <th>STATE</th>
                         <th>BRAND</th>
                         <th>MATERIAL</th>
                         <th>SIZE</th>
-                        <th>STATUS</th>
+                        {{-- <th>STATUS</th> --}}
                         <th>STOCKS</th>
                         <th><i class="bi bi-gear-fill"></i></th>
                     </tr>
@@ -38,27 +37,26 @@
                             </div>
                         </td>
                         <td>{{ $product->type }}</td>
-                        <td>{{ $product->state }}</td>
                         <td>{{ $product->brand }} </td>
                         <td>{{ $product->material }}</td>
                         <td>{{ $product->size }} </td>
-                        <td>{{ $product->status ? "Active" : "Inactive" }}</td>
+                        {{-- <td>{{ $product->status ? "Active" : "Inactive" }}</td> --}}
                         <td>{{ $product->stocks }} </td>
                         <td>
                             <a href="{{ route('view-product', $product->id) }}"
                                 class="btn btn-dark btn-sm fw-bold text-uppercase" title="View Product">
                                 <i class="bi bi-eye-fill me-1"></i>View
                             </a>
-                            <a href="{{ route('view-product', $product->id) }}"
+                            {{-- <a href="{{ route('view-product', $product->id) }}"
                                 class="btn btn-danger bg-logo-dark text-white btn-sm fw-bold text-uppercase"
                                 title="Archive Product" data-bs-toggle="modal"
                                 data-bs-target="#productArchiveModal{{ $product->id }}">
                                 <i class="bi bi-archive-fill me-1"></i>Archive
-                            </a>
+                            </a> --}}
                         </td>
                     </tr>
                     {{-- Archive Modal --}}
-                    @include('modals.product-archive')
+                    {{-- @include('modals.product-archive') --}}
                     @endforeach
                 </tbody>
             </table>

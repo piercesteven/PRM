@@ -23,7 +23,6 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'type' => 'required|min:3|max:50',
-            'state' => 'required|min:3|max:20',
             'brand' => 'required|min:3|max:50',
             'material' => 'required|min:3|max:50',
             'size' => 'required|min:3|max:20',
