@@ -9,5 +9,4 @@
         <a href="{{ route('create-order') }}" class="btn btn-dark fw-bold">Submit</a>
         <x-modal-cancel-button>Cancel</x-modal-cancel-button>
     </div>
-    </form>
 </x-modal>

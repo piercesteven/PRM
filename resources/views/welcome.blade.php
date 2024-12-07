@@ -12,8 +12,8 @@
 
 <body>
     <div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
-        <a href="{{ route('dashboard') }}" class="btn btn-info fw-bold">
-            Go to dashboard
+        <a href="{{ route('login') }}" class="btn btn-info fw-bold">
+            Go to login
         </a>
     </div>
 </body>

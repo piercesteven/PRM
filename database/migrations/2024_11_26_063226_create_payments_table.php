@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('payment_method');
             $table->string('reference_number')->nullable();
             $table->string('status')->default('Pending');
-            $table->datetime('transaction_closed')->nullable();
             $table->timestamps();
         });
     }

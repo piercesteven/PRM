@@ -51,6 +51,6 @@ class Product extends Model
             ->whereNull('effective_date')
             ->first();
 
-        return $current_price->price;
+        return $current_price->price ?? null;
     }
 }

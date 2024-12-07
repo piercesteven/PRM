@@ -26,73 +26,9 @@
                             </div>
                             <hr>
                             @if($state == "Brand New")
-                            <div class="row">
-                                <div class="col-12 mb-3">
-                                    <div class="input-group">
-                                        <div class="input-group-text fw-bold text-uppercase">State:</div>
-                                        <input type="text" class="form-control" id="state" placeholder="Username"
-                                            value="{{ $state }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-6 mb-3">
-                                    <div class="input-group">
-                                        <div class="input-group-text fw-bold text-uppercase">Stocks:</div>
-                                        <input type="text" class="form-control" id="totalStocks" placeholder="Username"
-                                            value="{{ $product->brandnewStocks() . ' pcs' }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-6 mb-3">
-                                    <div class="input-group">
-                                        <div class="input-group-text fw-bold text-uppercase">Price:</div>
-                                        <input type="text" class="form-control" id="currentPrice" placeholder="Username"
-                                            value="{{ " P " . $product->currentPrice() }}" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                            <form action="" method="POST">
-                                @csrf
-                                @method('POST')
-                                <input type="hidden" class="form-control" value="{{ $order->id }}">
-                                <input type="hidden" class="form-control" value="{{ $product->id }}">
-                                <div class="col-12 mb-3">
-                                    <div class="input-group">
-                                        <div class="input-group-text fw-bold text-uppercase">Quantity:</div>
-                                        <button class="btn btn-dark" type="button" id="decrementBtn">
-                                            <i class="bi bi-dash-lg"></i>
-                                        </button>
-                                        <input type="text" class="form-control text-center" id="quantity"
-                                            name="quantity" value="0" readonly>
-                                        <button class="btn btn-dark" type="button" id="incrementBtn">
-                                            <i class="bi bi-plus-lg"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="col-12 mb-3">
-                                    <div class="input-group">
-                                        <div class="input-group-text fw-bold text-uppercase">Total: P</div>
-                                        <input type="text" class="form-control" name="subtotal" id="subTotal"
-                                            placeholder="Username" value="0" readonly>
-                                    </div>
-                                </div>
-                                <input type="hidden" id="hiddenQuantity" name="quantity" value="0">
-                                <input type="hidden" id="hiddenSubTotal" name="subtotal" value="0">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <button type="submit"
-                                            class="form-control fw-bold btn btn-sm btn-dark bg-logo-dark mb-2">
-                                            <i class="fa fa-shopping-basket" aria-hidden="true"></i> ADD TO
-                                            BASKET</button>
-                                    </div>
-                                    <div class="col-12">
-                                        <a href="{{ route('pos') }}" type="button"
-                                            class="form-control fw-bold btn btn-dark btn-sm">
-                                            <i class="fa fa-chevron-left" aria-hidden="true"></i> GO BACK</a>
-                                    </div>
-                                </div>
-
-                            </form>
+                            @include('partials.page.add-order-brandnew')
                             @elseif ($state == "Secondhand")
-                            Secondhand
+                            @include('partials.page.add-order-secondhand')
                             @else
                             <span class="text-center fw-bold fs-6 text-logo-dark">
                                 Something went wrong.
@@ -111,6 +47,7 @@
         function calculateSubtotal() {
             var quantity = parseInt($('#quantity').val()); // Use .val() for input fields
             var price = parseFloat($('#currentPrice').val().replace("P ", "")); // Remove "P " and convert to number
+            console.log(price);
             var subtotal = quantity * price;
             return subtotal.toFixed(2); // Limit to two decimal places
         }

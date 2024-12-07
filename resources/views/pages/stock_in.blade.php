@@ -101,6 +101,17 @@
 @include('modals.batch-create')
 <script>
     $(document).ready(function() {
+         $('#search-tools').on('input', function() {
+            var searchText = $(this).val().toLowerCase();
+            $('.clickable-row').each(function() {
+                var productName = $(this).find('.name').text().toLowerCase();
+                if (productName.includes(searchText)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
         $('.clickable-row').on('click', function() {
             const url = $(this).data('href'); // Get the URL from the data-href attribute
             if (url) {
@@ -108,5 +119,6 @@
             }
         });
     });
+    
 </script>
 @endsection

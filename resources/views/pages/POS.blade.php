@@ -16,6 +16,7 @@
             <div class="card-body">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2 mt-1 px-4" id="product-container">
                     @foreach ($products as $product)
+                    @if($product->currentPrice())
                     <div class="mb-3 product-card">
                         <div class="card border border-dark border-2">
                             <div class="card-header fw-bold bg-dark text-white name">
@@ -48,6 +49,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endforeach
                 </div>
             </div>
@@ -68,36 +70,44 @@
                     <span class="fw-bold">
                         Order details
                     </span>
+                    @foreach ($order->orderDetails as $item)
                     <div class="card p-2">
                         <div class="d-flex">
                             <div class="ms-2 align-items-center justify-content-between py-1" style="width: 60px;">
                                 <h2 class="text-logo-dark fw-bold">
-                                    2X
+                                    {{ $item->quantity }}X
                                 </h2>
                             </div>
                             <div class="d-flex justify-content-between" style="width: 100%; ">
                                 <div class="d-flex flex-column p-2">
-                                    <h6 class="text-dark fw-bold">
-                                        Durun 165-65-R15
-                                    </h6>
+                                    <span class="text-dark fw-bold">
+                                        {{ $item->product->brand . " " . $item->product->size }}
+                                    </span>
+                                    <small class="fw-semibold text-primary" style="margin-top: -5px;">
+                                        {{ $item->state }}
+                                    </small>
                                     <span style="font-size: 13px; margin-top: -5px;">
-                                        <a class="text-danger fw-bold me-2">Remove</a>
+                                        <a href="{{ route('remove-order-detail', ['id' => $item->id, 'state' => $item->state]) }}"
+                                            class="text-danger fw-bold me-2">Remove</a>
                                     </span>
                                 </div>
-                                <h6 class="fw-bold mt-3">
-                                    P 3,200
-                                </h6>
+                                <small class="fw-bold mt-2 d-flex flex-column">
+                                    <small>Price: P {{ number_format($item->price) }}</small>
+                                    <small>SubTotal: P {{ number_format($item->total) }}</small>
+                                </small>
                             </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
                 <div class="col-12 d-flex justify-content-end">
                     <h5 class="fw-bold me-4">
-                        Total: P 6,400
+                        Total: P {{ number_format($grand_total, 2, '.', ',') }}
                     </h5>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-dark fw-bold form-control">
+                    <button class="btn btn-dark fw-bold form-control" data-bs-toggle="modal"
+                        data-bs-target="#orderCheckoutModal">
                         <i class="bi bi-cart-check-fill me-2"></i>Checkout</button>
                 </div>
             </div>
@@ -106,6 +116,7 @@
     </div>
 </div>
 @include('modals.order-create')
+@include('modals.order-checkout')
 <script>
     $(document).ready(function() {
         $('#search-tools').on('input', function() {

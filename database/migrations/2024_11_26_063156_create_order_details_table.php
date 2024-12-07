@@ -21,6 +21,7 @@ return new class extends Migration
                 ->constrained('products')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->string('state');
             $table->unsignedTinyInteger('quantity');
             $table->decimal('price', 10, 2);
             $table->decimal('total', 10, 2);
