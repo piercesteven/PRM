@@ -1,6 +1,7 @@
 <p align="center">
-    <img src="https://github.com/piercesteven/ticketease.git/public/img/logo.png" width="400" alt="Ticketease Logo">
+    <img src="https://raw.githubusercontent.com/piercesteven/ticketease/main/public/img/logo.png" width="400" alt="Ticketease Logo">
 </p>
+
 
 ## CHO ICT Department TicketEase
 
